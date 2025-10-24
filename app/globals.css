@@ -62,7 +62,7 @@
  .bg-primary {
     background-color: var(--color-primary);
     }
-@layer utilities {
+@layer components {
     .flex-between {
         @apply flex justify-between items-center;
     }
@@ -98,11 +98,22 @@
     .text-14-normal {
         @apply font-normal text-sm text-white-100/80;
     }
-    .pink_container {
-        @apply w-full  min-h-[530px] flex justify-center items-center flex-col py-10 px-6; 
-        /* pattern */
-    }
+   .pink_container {
+  @apply w-full min-h-[530px] flex justify-center items-center flex-col py-10 px-6;
 
+  @apply bg-primary; /* Or use bg-[#EE2b69] directly */
+
+  background-image: linear-gradient(
+    to right,
+    transparent 49%, /* Widened from 49.5% */
+    rgba(251, 232, 67, 0.2) 49%, /* Start color slightly earlier */
+    rgba(251, 232, 67, 0.6) 51%, /* End color slightly later */
+    transparent 51%  /* Widened from 50.5% */
+  );
+  background-size: 5% 100%; /* You might still need to increase this 5% later */
+  background-position: center;
+  background-repeat: repeat-x;
+}
     .tag {
         @apply bg-secondary px-6 py-3 font-work-sans font-bold rounded-sm uppercase relative ;
         /* tag-tri */
@@ -256,20 +267,6 @@
     }
 }
 
-@layer components {
-  .pattern {
-    background-image: linear-gradient(
-      to right,
-      transparent 49.5%,
-      rgba(251, 232, 67, 0.2) 49.5%,
-      rgba(251, 232, 67, 0.6) 50.5%,
-      transparent 50.5%
-    );
-    background-size: 5% 100%;
-    background-position: center;
-    background-repeat: repeat-x;
-  }
-}
 
 .w-md-editor-toolbar {
     padding: 10px;
