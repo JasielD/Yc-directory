@@ -213,7 +213,7 @@
     }
 
     .startup-card_btn {
-        @apply rounded-full bg-black-200 font-medium text-[16px] text-white px-5 py-3 ;
+        @apply !rounded-full !bg-black-200 !font-medium !text-[16px] !text-white !px-5 !py-3;
     }
 
     .startup-card_skeleton {
