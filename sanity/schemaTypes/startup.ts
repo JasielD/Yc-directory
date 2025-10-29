@@ -9,7 +9,7 @@ export const  startup = defineType({
     icon:UserIcon,
     fields:[
         defineField({
-            name:"name",
+            name:"title",
             type:"string"
         }),
         defineField({
@@ -38,7 +38,7 @@ export const  startup = defineType({
             validation:(rule)=>rule.min(1).max(20).required().error("please select a category")
         }),
            defineField({
-            name:"images",
+            name:"image",
             type:"url",
             validation:(rule)=>rule.required()
         }),
