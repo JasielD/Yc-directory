@@ -3,11 +3,12 @@ import Search from "../../components/Search_Input";
 import { STARTUP_QUERY } from "@/sanity/lib/queries";
 import { sanityFetch } from "@/sanity/lib/live";
 
-export default async function Home({searchParams}:{
+const Home = async ({searchParams}:{
   searchParams: Promise<{query?:string}>
-}) {
+})=> {
   const query = (await searchParams).query
-  const result = await sanityFetch({query:STARTUP_QUERY})
+  const params = {search:query || null}
+  const result = await sanityFetch({query:STARTUP_QUERY, params})
   const posts = result.data;
   // const posts = await client.fetch(STARTUP_QUERY)
 
@@ -35,3 +36,5 @@ export default async function Home({searchParams}:{
     </div>
   );
 }
+
+export default Home ;
