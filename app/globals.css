@@ -116,7 +116,8 @@
 }
     .tag {
         @apply bg-secondary px-6 py-3 font-work-sans font-bold rounded-sm uppercase relative ;
-        /* tag-tri */
+        @apply bg-secondary ;
+        @apply before:content-[''] before:absolute before:top-2 before:left-2 before:border-t-[10px] before:border-t-black before:border-r-[10px] before:border-r-transparent after:content-[''] after:absolute after:bottom-2 after:right-2 after:border-b-[10px] after:border-b-black after:border-l-[10px] after:border-l-transparent
     }
 
     .heading {
@@ -319,7 +320,6 @@
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.129 0.042 264.695);
   --primary-foreground: oklch(0.984 0.003 247.858);
-  --secondary: oklch(0.968 0.007 247.896);
   --secondary-foreground: oklch(0.208 0.042 265.755);
   --muted: oklch(0.968 0.007 247.896);
   --muted-foreground: oklch(0.554 0.046 257.417);
@@ -351,7 +351,7 @@
   --card-foreground: oklch(0.984 0.003 247.858);
   --popover: oklch(0.208 0.042 265.755);
   --popover-foreground: oklch(0.984 0.003 247.858);
-  --primary: oklch(0.929 0.013 255.508);
+  --primary: #EE2b69;
   --primary-foreground: oklch(0.208 0.042 265.755);
   --secondary: oklch(0.279 0.041 260.031);
   --secondary-foreground: oklch(0.984 0.003 247.858);

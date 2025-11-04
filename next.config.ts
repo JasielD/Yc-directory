@@ -9,7 +9,8 @@ const nextConfig: NextConfig = {
     }]
   },
   // experimental:{
-  //   ppr:'incremental'
+  //   // ppr:'incremental'
+  //   cacheComponents: true
   // },
   devIndicators:{
    position:'bottom-right'
