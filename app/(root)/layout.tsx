@@ -1,5 +1,6 @@
 import React from 'react'
 import Navbar from '../../components/Navbar'
+import { Toaster } from 'sonner'
 
 const layout = ({children}: Readonly<{children:React.ReactNode}>) => {
   return (
@@ -7,6 +8,7 @@ const layout = ({children}: Readonly<{children:React.ReactNode}>) => {
       <main className='font-work-sans'>
         <Navbar />
         {children}
+        <Toaster/>
       </main>
     </div>
   )
