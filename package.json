@@ -14,13 +14,15 @@
   "packageManager": "npm@11.6.2",
   "overrides": {
     "react": "$react",
-    "reactdom": "$reactdom"
+    "reactdom": "$reactdom",
+    "next": "$next"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.3",
     "@radix-ui/react-toast": "^1.2.15",
     "@sanity/image-url": "^1.2.0",
     "@sanity/vision": "^4.11.0",
+    "@sentry/nextjs": "^10.25.0",
     "@tailwindcss/typography": "^0.5.19",
     "@uiw/react-md-editor": "^4.0.8",
     "class-variance-authority": "^0.7.1",
