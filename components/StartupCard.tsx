@@ -21,16 +21,24 @@ const StartupCard = ({post}:{post:StartupTypeCard}) => {
         </div>
         <div className='flex-between mt-5 gap-5'>
             <div className='flex-1'>
-                <Link href={`/users/${author?._id}`}>
+                <Link href={`/user/${author?._id}`}>
                 <p className='text-16-medium line-clamp-1'>{author?.name}</p>
                 </Link>
-                <Link href={`/users/${_id}`}>
+                <Link href={`/user/${_id}`}>
                 <h3 className='text-26-semibold line-clamp-1'>{title}</h3>
                 </Link>
             </div>
             <Link href={`/user/${author?._id}`}>
-            <Image src="https://placehold.co/48x48" alt='placeholder' 
-            width={48} height={48} className='rounded-full' />
+             <div className="relative w-12 h-12 rounded-full overflow-hidden shrink-0">
+                      <Image
+                        src={author?.image!}
+                        alt={author?.name!}
+                        fill={true} /* 2. Tells Image to fill its relative parent */
+                         /* 3. 'object-cover' crops the image to fit the circle */
+                      />
+                    </div>
+            {/* <Image src={author?.image!} alt={author?.name!} 
+            width={48} height={48} className='rounded-full' /> */}
             </Link>
         </div>
         <Link href={`/startup/${_id}`}>

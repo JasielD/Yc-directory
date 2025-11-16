@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useActionState } from "react";
+import React, { useState, useActionState,useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import MDEditor from "@uiw/react-md-editor";
@@ -12,69 +12,173 @@ import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { createPitch } from "@/lib/actions";
 
+type FormState = {
+  error: string;
+  status: "INITIAL" | "SUCCESS" | "ERROR";
+  fieldErrors?: Record<string, string>;
+  _id?: string; // We'll pass the new startup ID back in the state
+};
+
+const initialFormState: FormState = {
+  error: "",
+  status: "INITIAL",
+};
+
 const StartupForm = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [pitch, setPitch] = useState("");
   const { toast } = useToast();
   const router = useRouter();
 
-  const handleFormSubmit = async (prevState: any, formData: FormData) => {
+  // 3. Modify your action handler
+  // It should NOT call any hooks (toast, router, setErrors).
+  // It should ONLY return the new state.
+  const handleFormSubmit = async (
+    prevState: FormState,
+    formData: FormData
+  ): Promise<FormState> => { // Ensure it returns the new FormState
     try {
       const formValues = {
         title: formData.get("title") as string,
         description: formData.get("description") as string,
         category: formData.get("category") as string,
         link: formData.get("link") as string,
-        pitch,
+        pitch, // This closure works since handleFormSubmit is defined in the component
       };
 
+      // Validate data
       await formSchema.parseAsync(formValues);
+      formData.append('pitch', pitch);
+      // Call your server action.
+      // Make sure createPitch returns { status: 'SUCCESS', _id: '...' }
+      // or { status: 'ERROR', error: '...' }
+      const result = await createPitch(prevState, formData);
 
-      const result = await createPitch(prevState, formData, pitch);
-
-      if (result.status == "SUCCESS") {
-        toast({
-          title: "Success",
-          description: "Your startup pitch has been created successfully",
-        });
-
-        router.push(`/startup/${result._id}`);
+      // Return the new state based on the result
+      if (result.status === "SUCCESS") {
+        return {
+          status: "SUCCESS",
+          _id: result._id, // Pass the ID back in the state
+          error: "",
+        };
+      } else {
+        // Handle a non-success error from createPitch
+        return {
+          status: "ERROR",
+          error: result.error || "Failed to create pitch",
+          fieldErrors: result.fieldErrors || {},
+        };
       }
-
-      return result;
     } catch (error) {
+      // Handle Zod validation error
       if (error instanceof z.ZodError) {
-        const fieldErorrs = error.flatten().fieldErrors;
-
-        setErrors(fieldErorrs as unknown as Record<string, string>);
-
-        toast({
-          title: "Error",
-          description: "Please check your inputs and try again",
-          variant: "destructive",
-        });
-
-        return { ...prevState, error: "Validation failed", status: "ERROR" };
+        const fieldErrors = error.flatten().fieldErrors;
+        return {
+          ...prevState,
+          status: "ERROR",
+          error: "Validation failed. Please check your inputs.",
+          fieldErrors: fieldErrors as unknown as Record<string, string>,
+        };
       }
 
-      toast({
-        title: "Error",
-        description: "An unexpected error has occurred",
-        variant: "destructive",
-      });
-
+      // Handle other unexpected errors
       return {
         ...prevState,
-        error: "An unexpected error has occurred",
         status: "ERROR",
+        error: "An unexpected error has occurred",
       };
     }
   };
 
-  const [state, formAction, isPending] = useActionState(handleFormSubmit, {
-    error: "",
-    status: "INITIAL",
-  });
+  // Your useActionState hook is now correctly set up
+  const [state, formAction, isPending] = useActionState(
+    handleFormSubmit,
+    initialFormState
+  );
+
+  // 4. Use useEffect to handle ALL side effects
+  useEffect(() => {
+    // On success
+    if (state.status === "SUCCESS" && state._id) {
+      toast({
+        title: "Success",
+        description: "Your startup pitch has been created successfully",
+      });
+      // Now you can safely redirect
+      router.push(`/startup/${state._id}`);
+    }
+
+    // On error
+    if (state.status === "ERROR") {
+      toast({
+        title: "Error",
+        description: state.error, // Use the error message from the state
+        variant: "destructive",
+      });
+      // Set local error state for your UI
+      if (state.fieldErrors) {
+        setErrors(state.fieldErrors);
+      }
+    }
+    // This effect runs whenever the 'state' object changes
+  }, [state, router, toast])
+  // const handleFormSubmit = async (prevState: any, formData: FormData) => {
+  //   try {
+  //     const formValues = {
+  //       title: formData.get("title") as string,
+  //       description: formData.get("description") as string,
+  //       category: formData.get("category") as string,
+  //       link: formData.get("link") as string,
+  //       pitch,
+  //     };
+
+  //     await formSchema.parseAsync(formValues);
+
+  //     const result = await createPitch(prevState, formData, pitch);
+
+  //     if (result.status == "SUCCESS") {
+  //       toast({
+  //         title: "Success",
+  //         description: "Your startup pitch has been created successfully",
+  //       });
+
+  //       router.push(`/startup/${result._id}`);
+  //     }
+
+  //     return result;
+  //   } catch (error) {
+  //     if (error instanceof z.ZodError) {
+  //       const fieldErorrs = error.flatten().fieldErrors;
+
+  //       setErrors(fieldErorrs as unknown as Record<string, string>);
+
+  //       toast({
+  //         title: "Error",
+  //         description: "Please check your inputs and try again",
+  //         variant: "destructive",
+  //       });
+
+  //       return { ...prevState, error: "Validation failed", status: "ERROR" };
+  //     }
+
+  //     toast({
+  //       title: "Error",
+  //       description: "An unexpected error has occurred",
+  //       variant: "destructive",
+  //     });
+
+  //     return {
+  //       ...prevState,
+  //       error: "An unexpected error has occurred",
+  //       status: "ERROR",
+  //     };
+  //   }
+  // };
+
+  // const [state, formAction, isPending] = useActionState(handleFormSubmit, {
+  //   error: "",
+  //   status: "INITIAL",
+  // });
 
   return (
     <form action={formAction} className="startup-form">
