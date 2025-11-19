@@ -9,7 +9,7 @@ const nextConfig: NextConfig = {
   eslint:{
     ignoreDuringBuilds:true
   },
- // transpilePackages: ["sanity"],
+ serverExternalPackages: ["sanity"],
   /* config options here */
   images:{
     remotePatterns:[{
