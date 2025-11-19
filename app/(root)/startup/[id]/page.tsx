@@ -9,6 +9,8 @@ import markdown from "markdown-it";
 import React, { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import View from "@/components/View";
+import { PLAYLIST_BY_SLUG_QUERY } from "@/sanity/lib/queries";
+import StartupCard, { StartupTypeCard } from "@/components/StartupCard";
 
 const md = markdown();
 
@@ -16,9 +18,15 @@ export const experimental_ppr = true;
 
 const page = async ({ params }: { params: Promise<{ id: string }> }) => {
   const id = (await params).id;
-  const post = await client.fetch(STARTUP_BY_ID_QUERY, { id });
+
+  const [post,{select:editorStartups}] = await Promise.all([
+    client.fetch(STARTUP_BY_ID_QUERY, { id }),
+    client.fetch( PLAYLIST_BY_SLUG_QUERY,{ slug: 'editor-picks' }),
+  ])
+
   if (!post) return notFound();
   const parsed_content = md.render(post?.pitch || '');
+
   return (
     <>
       <section className="pink_container max-h-[230px]!">
@@ -63,7 +71,17 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
             <p className="no-result">No details</p>
           )}
         </div>
-        <hr className="divider"></hr>
+        <hr className="divider" />
+        {editorStartups?.length>0 &&(
+          <div className="max-w-4xl mx-auto">
+            <p className="text-30-semibold">Editor Picks</p>
+            <ul className="mt-7 card_grid-sm">
+            {editorStartups.map((startup:StartupTypeCard,index:number)=>(
+              <StartupCard key={index} post={startup}/>
+            ))}
+            </ul>
+          </div>
+        )}
         <Suspense fallback={<Skeleton className="view_skeleton"/>}>
         <View id={id} />
         </Suspense>
