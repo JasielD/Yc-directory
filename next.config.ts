@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
   },
   eslint:{
     ignoreDuringBuilds:true
-  }
+  },
   transpilePackages: ["sanity"],
   /* config options here */
   images:{
