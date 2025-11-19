@@ -9,7 +9,7 @@ const nextConfig: NextConfig = {
   eslint:{
     ignoreDuringBuilds:true
   },
-  transpilePackages: ["sanity"],
+ // transpilePackages: ["sanity"],
   /* config options here */
   images:{
     remotePatterns:[{
@@ -56,5 +56,13 @@ export default withSentryConfig(nextConfig, {
   // See the following for more information:
   // https://docs.sentry.io/product/crons/
   // https://vercel.com/docs/cron-jobs
-  automaticVercelMonitors: true
+  automaticVercelMonitors: true,
+  sourcemaps: {
+    disable: false, // keep true if you want to try disabling them completely
+    // valid globs to ignore specific files
+    ignore: [
+      "node_modules/sanity/**/*", 
+      "node_modules/sanity"
+    ],
+  },
 });
