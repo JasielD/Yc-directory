@@ -2,6 +2,7 @@ import {withSentryConfig} from "@sentry/nextjs";
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  productionBrowserSourceMaps: false,
   typescript:{
     ignoreBuildErrors:true
   },
@@ -34,7 +35,7 @@ export default withSentryConfig(nextConfig, {
   project: "javascript-nextjs",
 
   // Only print logs for uploading source maps in CI
-  silent: !process.env.CI,
+  silent: !(process as any).env.CI,
 
   // For all available options, see:
   // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
