@@ -31,8 +31,8 @@ const StartupCard = ({post}:{post:StartupTypeCard}) => {
             <Link href={`/user/${author?._id}`}>
              <div className="relative w-12 h-12 rounded-full overflow-hidden shrink-0">
                       <Image
-                        src={author?.image!}
-                        alt={author?.name!}
+                        src={author?.image || "https://www.shutterstock.com/image-vector/default-ui-image-placeholder-wireframes-600nw-1037719192.jpg"}
+                        alt={author?.name || "author image"}
                         fill={true} /* 2. Tells Image to fill its relative parent */
                          /* 3. 'object-cover' crops the image to fit the circle */
                       />
