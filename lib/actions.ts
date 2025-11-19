@@ -5,7 +5,7 @@ import slugify from "slugify";
 import { write_Client } from "@/sanity/lib/write-client";
 
 export const createPitch = async (
-  state: any,
+  state: unknown,
   form: FormData // FIX: Removed the extra 'pitch: string' argument
 ) => {
   const session = await auth();

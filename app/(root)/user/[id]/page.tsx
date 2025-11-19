@@ -5,7 +5,6 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import React, { Suspense } from "react";
 import UserStartups, { StartupCardSkeleton } from "@/components/userStartups";
-import { Star } from "lucide-react";
 
 const page = async ({ params }: { params: Promise<{ id: string }> }) => {
   const id = (await params).id;

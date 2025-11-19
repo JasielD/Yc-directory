@@ -28,7 +28,7 @@ const Home = async ({searchParams}:{
         </p>
         <ul className="mt-7 card_grid">
           {posts?.length>0?(
-            posts.map((post:StartupTypeCard,index:number)=>(
+            posts.map((post:StartupTypeCard)=>(
                <StartupCard key={post?._id} post={post}/>
             ))
           ):(
