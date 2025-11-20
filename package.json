@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev ",
-   "build": "next build",
+    "build": "next build",
     "start": "next start",
     "lint": "eslint",
     "predev": "npm run typegen",
@@ -31,7 +31,7 @@
     "lucide-react": "^0.546.0",
     "markdown-it": "^14.1.0",
     "next": "^15.5.6",
-    "next-auth": "^5.0.0-beta.29",
+    "next-auth": "5.0.0-beta.25",
     "next-sanity": "^11.6.3-canary.1",
     "next-themes": "^0.4.6",
     "postcss": "^8.5.6",
