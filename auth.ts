@@ -7,7 +7,8 @@ import { write_Client } from "./sanity/lib/write-client"
 export const { handlers, auth, signIn, signOut } = (NextAuth as any)({
   providers: [GitHub],
   callbacks: {
-    async signIn({ user: { name, email, image }, profile, account }) {
+    async signIn({ user, profile, account }: { user: any; profile: any; account: any }) {
+      const { name, email, image } = user;
       // 1. Check if user exists
       const existingUser = await client
         .withConfig({ useCdn: false })
@@ -30,7 +31,7 @@ export const { handlers, auth, signIn, signOut } = (NextAuth as any)({
       return true;
     },
 
-    async jwt({ token, account, profile }) {
+    async jwt({ token, account, profile }: { token: any; account: any; profile: any }) {
       if (account && profile) {
         const user = await client
           .withConfig({ useCdn: false })
@@ -43,7 +44,7 @@ export const { handlers, auth, signIn, signOut } = (NextAuth as any)({
       return token;
     },
 
-    async session({ session, token }) {
+    async session({ session, token }: { session: any; token: any }) {
       Object.assign(session, { id: token.id });
       return session;
     },
